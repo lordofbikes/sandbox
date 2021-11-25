@@ -10,9 +10,12 @@ jobs:
         run: |
           sudo add-apt-repository -y ppa:beineri/opt-qt-5.12.9-focal
           sudo apt-get -y update
-          sudo apt-get -qq install qt512-meta-full libgl-dev libmuparser-dev libboost-dev libfreetype6-dev libicu-dev pkg-config
-          which bash
-          /bin/bash --version
-          /usr/bin/bash --version
-          source /opt/qt512/bin/qt512-env.sh 2>&1
+          sudo apt-get -qq install qt512-meta-full libgl-dev libmuparser-dev libboost-dev libfreetype6-dev libicu-dev pkg-config qtchooser
+          #/opt/qt512/bin/qt512-env.sh
+          /opt/qt512/bin/qmake -v
+          qtchooser -list-versions
+          export QT_SELECT=opt-qt512
+          which qmake
           qmake -v
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
