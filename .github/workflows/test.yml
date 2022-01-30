@@ -1,0 +1,74 @@
+name: Continuous test
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  BuildLinux:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build
+        run: |
+          echo "This was built on Linux." >linux.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: LinuxAsset
+          path: linux.txt
+          retention-days: 2
+
+  BuildMacOS:
+    runs-on: macos-11
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build
+        run: |
+          echo "This was built on MacOS." >macos.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: MacOSAsset
+          path: maxos.txt
+          retention-days: 2
+          
+  BuildWindows:
+    runs-on: windows-10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build
+        run: |
+          echo "This was built on Windows." >windows.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: WindowsAsset
+          path: windows.txt
+          retention-days: 2
+
+  UpdateAssets:
+    needs: [BuildLinux, BuildMacOS, BuildWindows]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Fetch artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+
