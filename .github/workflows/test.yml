@@ -40,11 +40,11 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: MacOSAsset
-          path: maxos.txt
+          path: macos.txt
           retention-days: 2
           
   BuildWindows:
-    runs-on: windows-10
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
