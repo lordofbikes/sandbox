@@ -20,7 +20,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: LinuxAsset
+          name: asset
           path: linux.txt
           retention-days: 2
 
@@ -39,7 +39,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: MacOSAsset
+          name: asset
           path: macos.txt
           retention-days: 2
           
@@ -58,7 +58,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: WindowsAsset
+          name: asset
           path: windows.txt
           retention-days: 2
 
