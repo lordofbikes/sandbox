@@ -20,7 +20,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: asset
+          name: assets
           path: linux.txt
           retention-days: 2
 
@@ -39,7 +39,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: asset
+          name: assets
           path: macos.txt
           retention-days: 2
           
@@ -58,7 +58,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: asset
+          name: assets
           path: windows.txt
           retention-days: 2
 
@@ -66,9 +66,29 @@ jobs:
     needs: [BuildLinux, BuildMacOS, BuildWindows]
     runs-on: ubuntu-20.04
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - name: Fetch artifacts
         uses: actions/download-artifact@v2
 
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+      - name: Rename artifacts
+        run: |
+          mv assets/linux.txt linux-`git describe --always`.txt
+          mv assets/macos.txt macos-`git describe --always`.txt
+          mv assets/windows.txt windows-`git describe --always`.txt
 
+      - name: Upload latest pre-release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Continuous Build"
+          files: |
+            linux*.txt
+            macos*.txt
+            windows*.txt
+            LICENSE
